@@ -2,7 +2,15 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-webNUT 是一个 NUT UPS Web 查看界面。本项目 fork 自原项目 [rshipp/webNUT](https://github.com/rshipp/webNUT)，提供 Docker 镜像，并支持反向代理后的同源详情页跳转。
+webNUT 是一个 NUT UPS Web 查看界面。
+
+本项目 fork 自原项目 [rshipp/webNUT](https://github.com/rshipp/webNUT)。
+
+本 fork 的更新：
+
+- 增加登录。
+- 增加反向代理部署下的相对路径详情链接。
+- 增加 Docker 镜像。
 
 ## 启动
 
