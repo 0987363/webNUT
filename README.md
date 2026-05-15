@@ -16,8 +16,10 @@ docker run -d \
   -p 6543:6543 \
   -e NUT_SERVER=127.0.0.1 \
   -e NUT_PORT=3493 \
-  -e WEBNUT_USERNAME= \
-  -e WEBNUT_PASSWORD= \
+  -e NUT_USERNAME= \
+  -e NUT_PASSWORD= \
+  -e WEBNUT_USERNAME=admin \
+  -e WEBNUT_PASSWORD=change-me \
   heifeng/webnut:latest
 ```
 
@@ -27,10 +29,14 @@ docker run -d \
 
 - `NUT_SERVER`：NUT 服务主机名或 IP。
 - `NUT_PORT`：NUT 服务端口，必须是整数。
-- `WEBNUT_USERNAME`：NUT 用户名，留空表示无需认证。
-- `WEBNUT_PASSWORD`：NUT 密码，留空表示无需认证。
+- `NUT_USERNAME`：NUT 用户名，留空表示连接 NUT 时无需认证。
+- `NUT_PASSWORD`：NUT 密码，留空表示连接 NUT 时无需认证。
+- `WEBNUT_USERNAME`：访问 WebNUT 的 Basic Auth 用户名。
+- `WEBNUT_PASSWORD`：访问 WebNUT 的 Basic Auth 密码。
 
 空字符串不会覆盖配置文件。
+
+WebNUT Basic Auth 只有在 `WEBNUT_USERNAME` 和 `WEBNUT_PASSWORD` 都存在有效值时启用。
 
 ## 构建镜像
 

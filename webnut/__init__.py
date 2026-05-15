@@ -1,6 +1,9 @@
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPNotFound
 
+from .basic_auth import BasicAuthMiddleware
+from .settings import load_config
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -14,4 +17,6 @@ def main(global_config, **settings):
             renderer='webnut:templates/404.pt',
             context='pyramid.exceptions.NotFound')
     config.scan()
-    return config.make_wsgi_app()
+    app = config.make_wsgi_app()
+    nut_config = load_config()
+    return BasicAuthMiddleware(app, nut_config.webnut_username, nut_config.webnut_password)

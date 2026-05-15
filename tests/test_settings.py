@@ -38,6 +38,8 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(settings.port, 3493)
         self.assertIsNone(settings.username)
         self.assertIsNone(settings.password)
+        self.assertIsNone(settings.webnut_username)
+        self.assertIsNone(settings.webnut_password)
 
     def test_environment_values_override_config_file_values(self):
         config = types.ModuleType("webnut.config")
@@ -54,8 +56,10 @@ class SettingsTests(unittest.TestCase):
             {
                 "NUT_SERVER": "env-nut",
                 "NUT_PORT": "3494",
-                "WEBNUT_USERNAME": "env-user",
-                "WEBNUT_PASSWORD": "env-pass",
+                "NUT_USERNAME": "env-user",
+                "NUT_PASSWORD": "env-pass",
+                "WEBNUT_USERNAME": "web-user",
+                "WEBNUT_PASSWORD": "web-pass",
             },
             clear=True,
         ):
@@ -65,6 +69,8 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(settings.port, 3494)
         self.assertEqual(settings.username, "env-user")
         self.assertEqual(settings.password, "env-pass")
+        self.assertEqual(settings.webnut_username, "web-user")
+        self.assertEqual(settings.webnut_password, "web-pass")
 
     def test_empty_environment_values_do_not_override_config_file_values(self):
         config = types.ModuleType("webnut.config")
@@ -81,8 +87,8 @@ class SettingsTests(unittest.TestCase):
             {
                 "NUT_SERVER": "",
                 "NUT_PORT": "",
-                "WEBNUT_USERNAME": "",
-                "WEBNUT_PASSWORD": "",
+                "NUT_USERNAME": "",
+                "NUT_PASSWORD": "",
             },
             clear=True,
         ):
@@ -92,6 +98,56 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(settings.port, 3493)
         self.assertEqual(settings.username, "config-user")
         self.assertEqual(settings.password, "config-pass")
+
+    def test_webnut_environment_values_do_not_override_nut_credentials(self):
+        config = types.ModuleType("webnut.config")
+        config.server = "config-nut"
+        config.port = 3493
+        config.username = "config-user"
+        config.password = "config-pass"
+        sys.modules["webnut.config"] = config
+
+        from webnut.settings import load_config
+
+        with mock.patch.dict(
+            os.environ,
+            {
+                "WEBNUT_USERNAME": "web-user",
+                "WEBNUT_PASSWORD": "web-pass",
+            },
+            clear=True,
+        ):
+            settings = load_config()
+
+        self.assertEqual(settings.username, "config-user")
+        self.assertEqual(settings.password, "config-pass")
+        self.assertEqual(settings.webnut_username, "web-user")
+        self.assertEqual(settings.webnut_password, "web-pass")
+
+    def test_webnut_environment_values_override_webnut_config_values(self):
+        config = types.ModuleType("webnut.config")
+        config.server = "config-nut"
+        config.port = 3493
+        config.username = None
+        config.password = None
+        config.webnut_username = "config-web-user"
+        config.webnut_password = "config-web-pass"
+        sys.modules["webnut.config"] = config
+
+        from webnut.settings import load_config
+
+        with mock.patch.dict(
+            os.environ,
+            {
+                "WEBNUT_USERNAME": "env-web-user",
+                "WEBNUT_PASSWORD": "env-web-pass",
+            },
+            clear=True,
+        ):
+            settings = load_config()
+
+        self.assertEqual(settings.webnut_username, "env-web-user")
+        self.assertEqual(settings.webnut_password, "env-web-pass")
 
     def test_invalid_environment_port_does_not_override_config_file_value(self):
         config = types.ModuleType("webnut.config")
