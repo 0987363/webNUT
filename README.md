@@ -2,13 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-webNUT is a web interface for viewing NUT UPS status. This project is forked from `https://github.com/rshipp/webNUT`, provides Docker images, and supports same-origin detail page navigation behind reverse proxies.
-
-## Docker Image
-
-```text
-heifeng/webnut
-```
+webNUT is a web interface for viewing NUT UPS status. This project is forked from [rshipp/webNUT](https://github.com/rshipp/webNUT), provides Docker images, and supports same-origin detail page navigation behind reverse proxies.
 
 ## Run
 
