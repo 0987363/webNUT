@@ -3,15 +3,16 @@ from pyramid.renderers import get_renderer
 from pyramid.view import view_config
 
 from .webnut import WebNUT
-from . import config
+from .settings import load_config
 
 class NUTViews(object):
     def __init__(self, request):
         self.request = request
         renderer = get_renderer("templates/layout.pt")
         self.layout = renderer.implementation().macros['layout']
-        self.webnut = WebNUT(config.server, config.port,
-                config.username, config.password)
+        nut_config = load_config()
+        self.webnut = WebNUT(nut_config.server, nut_config.port,
+                nut_config.username, nut_config.password)
 
     @view_config(route_name='home', renderer='templates/index.pt')
     def home(self):

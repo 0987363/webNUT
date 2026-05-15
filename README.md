@@ -1,29 +1,44 @@
-webNUT
-======
+# webNUT
 
-A simple web interface for NUT ([Network UPS Tools][1])
-servers, built on Pyramid, Bootstrap, and
-[python-nut2][2].
+webNUT 是一个 NUT UPS Web 查看界面。本项目 fork 自原项目 `https://github.com/rshipp/webNUT`，提供 Docker 镜像，并支持反向代理后的同源详情页跳转。
 
-[1]: http://www.networkupstools.org/ "Network UPS Tools"
-[2]: https://github.com/george2/python-nut2 "python-nut2"
+## Docker 镜像
 
-## Setup
+```text
+heifeng/webnut
+```
 
-Rename `webnut/config.example.py` to `webnut/config.py` and set the
-variables in that file to reflect your NUT server configuration. Then
-serve webNUT as you would any Pyramid app, using `pserve` or through
-your production-ready server of choice.
+## 启动
 
-## Screenshots
+```bash
+docker run -d \
+  --name webnut \
+  -p 6543:6543 \
+  -e NUT_SERVER=127.0.0.1 \
+  -e NUT_PORT=3493 \
+  -e WEBNUT_USERNAME= \
+  -e WEBNUT_PASSWORD= \
+  heifeng/webnut:latest
+```
 
-The index lists available UPS devices, along with their description,
-status, and battery charge:
+## 配置
 
-![Index](screenshots/ups_index.png "Index")
+启动时先读取 `webnut/config.py`，再读取环境变量；环境变量存在有效值时覆盖配置文件。
 
-Clicking on a UPS's name takes you to a details view that shows a quick
-status indicator, as well as the values of all variables set on the
-device:
+- `NUT_SERVER`：NUT 服务主机名或 IP。
+- `NUT_PORT`：NUT 服务端口，必须是整数。
+- `WEBNUT_USERNAME`：NUT 用户名，留空表示无需认证。
+- `WEBNUT_PASSWORD`：NUT 密码，留空表示无需认证。
 
-![UPS View](screenshots/ups_view.png "UPS View")
+空字符串不会覆盖配置文件。
+
+## 构建镜像
+
+```bash
+make docker
+```
+
+镜像标签：
+
+- `heifeng/webnut:latest`
+- `heifeng/webnut:<YYYYMMDDHHMMSS>`
