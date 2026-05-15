@@ -33,14 +33,14 @@ class StartResponse(object):
 
 
 class BasicAuthMiddlewareTests(unittest.TestCase):
-    def test_without_configured_credentials_passes_through(self):
+    def test_without_configured_credentials_is_rejected(self):
         start_response = StartResponse()
         app = BasicAuthMiddleware(ok_app, None, None)
 
         body = b"".join(app({}, start_response))
 
-        self.assertEqual(start_response.status, "200 OK")
-        self.assertEqual(body, b"ok")
+        self.assertEqual(start_response.status, "401 Unauthorized")
+        self.assertEqual(body, b"Unauthorized")
 
     def test_missing_authorization_header_is_rejected(self):
         start_response = StartResponse()

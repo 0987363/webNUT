@@ -1,14 +1,16 @@
 # webNUT
 
-webNUT 是一个 NUT UPS Web 查看界面。本项目 fork 自原项目 `https://github.com/rshipp/webNUT`，提供 Docker 镜像，并支持反向代理后的同源详情页跳转。
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-## Docker 镜像
+webNUT is a web interface for viewing NUT UPS status. This project is forked from `https://github.com/rshipp/webNUT`, provides Docker images, and supports same-origin detail page navigation behind reverse proxies.
+
+## Docker Image
 
 ```text
 heifeng/webnut
 ```
 
-## 启动
+## Run
 
 ```bash
 docker run -d \
@@ -23,39 +25,39 @@ docker run -d \
   heifeng/webnut:latest
 ```
 
-## 配置
+## Configuration
 
-启动时先读取 `webnut/config.py`，再读取环境变量；环境变量存在有效值时覆盖配置文件。
+At startup, webNUT reads `webnut/config.py` first, then reads environment variables. Environment variables with valid values override the file configuration.
 
-- `NUT_SERVER`：NUT 服务主机名或 IP。
-- `NUT_PORT`：NUT 服务端口，必须是整数。
-- `NUT_USERNAME`：NUT 用户名，留空表示连接 NUT 时无需认证。
-- `NUT_PASSWORD`：NUT 密码，留空表示连接 NUT 时无需认证。
-- `WEBNUT_USERNAME`：访问 WebNUT 的 Basic Auth 用户名。
-- `WEBNUT_PASSWORD`：访问 WebNUT 的 Basic Auth 密码。
+- `NUT_SERVER`: NUT server hostname or IP address.
+- `NUT_PORT`: NUT server port. Must be an integer.
+- `NUT_USERNAME`: NUT username. Leave empty when the NUT server does not require authentication.
+- `NUT_PASSWORD`: NUT password. Leave empty when the NUT server does not require authentication.
+- `WEBNUT_USERNAME`: Basic Auth username for accessing WebNUT.
+- `WEBNUT_PASSWORD`: Basic Auth password for accessing WebNUT.
 
-空字符串不会覆盖配置文件。
+Empty strings do not override the file configuration.
 
-WebNUT Basic Auth 只有在 `WEBNUT_USERNAME` 和 `WEBNUT_PASSWORD` 都存在有效值时启用。
+WebNUT protects page access with Basic Auth. You must configure `WEBNUT_USERNAME` and `WEBNUT_PASSWORD` before logging in.
 
-## 构建镜像
+## Build Images
 
 ```bash
 make docker
 ```
 
-默认构建 x86 镜像，镜像标签：
+The default build creates x86 images with these tags:
 
 - `heifeng/webnut:latest`
 - `heifeng/webnut:<YYYYMMDDHHMMSS>`
 
-构建 arm64 镜像：
+Build arm64 images:
 
 ```bash
 make docker-arm64
 ```
 
-arm64 镜像标签：
+arm64 image tags:
 
 - `heifeng/webnut:latest-arm64`
 - `heifeng/webnut:<YYYYMMDDHHMMSS>-arm64`

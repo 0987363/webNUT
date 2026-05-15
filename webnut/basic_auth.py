@@ -9,9 +9,6 @@ class BasicAuthMiddleware(object):
         self.password = password
 
     def __call__(self, environ, start_response):
-        if not self.username or not self.password:
-            return self.app(environ, start_response)
-
         if self._authorized(environ.get("HTTP_AUTHORIZATION", "")):
             return self.app(environ, start_response)
 
@@ -25,6 +22,9 @@ class BasicAuthMiddleware(object):
         return [b"Unauthorized"]
 
     def _authorized(self, header):
+        if not self.username or not self.password:
+            return False
+
         prefix = "Basic "
         if not header.startswith(prefix):
             return False
