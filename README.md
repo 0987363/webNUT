@@ -38,7 +38,18 @@ docker run -d \
 make docker
 ```
 
-镜像标签：
+默认构建 x86 镜像，镜像标签：
 
 - `heifeng/webnut:latest`
 - `heifeng/webnut:<YYYYMMDDHHMMSS>`
+
+构建 arm64 镜像：
+
+```bash
+make docker-arm64
+```
+
+arm64 镜像标签：
+
+- `heifeng/webnut:latest-arm64`
+- `heifeng/webnut:<YYYYMMDDHHMMSS>-arm64`
